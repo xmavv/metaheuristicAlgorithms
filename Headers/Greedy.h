@@ -9,12 +9,7 @@
 
 using namespace std;
 
-struct GreedyResult {
-    vector<int> path; // Znaleziona trasa
-    double cost;      // Całkowity koszt trasy
-};
-
 class Greedy {
 public:
-    GreedyResult greedyAlgorithm(double** distanceMatrix, int numVertices);
+    int* greedyAlgorithm(double** distanceMatrix, int numVertices);
 };

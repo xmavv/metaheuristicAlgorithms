@@ -1,17 +1,21 @@
 #include "../Headers/Greedy.h"
 
 
-GreedyResult Greedy::greedyAlgorithm(double** distanceMatrix, int numVertices) {
-    vector<bool> visited(numVertices, false); // Oznaczenie, czy miasto zostało odwiedzone
-    vector<int> path;                        // Trasa zachłanna
-    double totalCost = 0.0;                  // Całkowity koszt trasy
+int* Greedy::greedyAlgorithm(double** distanceMatrix, int numVertices) {
+    bool* visited = new bool[numVertices]; // Dynamiczna tablica oznaczająca odwiedzone miasta
+    int* path = new int[numVertices + 1]; // Tablica trasy (zawiera powrót do miasta początkowego)
+    double totalCost = 0.0;               // Całkowity koszt trasy
+
+    for (int i = 0; i < numVertices; ++i) {
+        visited[i] = false;
+    }
 
     int currentCity = 0; // Zaczynamy od miasta 0
     visited[currentCity] = true;
-    path.push_back(currentCity);
+    path[0] = currentCity;
 
     // Znajdowanie kolejnych miast
-    for (int step = 0; step < numVertices - 1; ++step) {
+    for (int step = 1; step < numVertices; ++step) {
         double minCost = numeric_limits<double>::max();
         int nextCity = -1;
 
@@ -27,32 +31,40 @@ GreedyResult Greedy::greedyAlgorithm(double** distanceMatrix, int numVertices) {
 
         // Jeśli nie znaleziono sąsiada, przerywamy (graf niespójny)
         if (nextCity == -1) {
-            cerr << "nie znaleziono sasiada" << endl;
-            return { {}, -1.0 };
+            cerr << "Nie znaleziono sąsiada" << endl;
+            delete[] visited;
+            delete[] path;
+            return nullptr;
         }
 
         // Przejście do kolejnego miasta
         totalCost += minCost;
         currentCity = nextCity;
         visited[currentCity] = true;
-        path.push_back(currentCity);
+        path[step] = currentCity;
     }
 
     // Powrót do miasta początkowego
     if (distanceMatrix[currentCity][0] != -1) {
         totalCost += distanceMatrix[currentCity][0];
-        path.push_back(0); // Zamykamy cykl
+        path[numVertices] = 0; // Zamykamy cykl
+        cout << "ostatni element w path: " << path[numVertices] << endl;
+
     } else {
-        return { {}, -1.0 };
+        cerr << "Brak połączenia powrotnego do miasta początkowego" << endl;
+        delete[] visited;
+        delete[] path;
+        return nullptr;
     }
 
     // Wyświetlenie najlepszego rozwiązania
-    cout << "najlepsza trasa: ";
-    for (int i = 0; i < numVertices; ++i) {
+    cout << "Najlepsza trasa: ";
+    for (int i = 0; i <= numVertices; ++i) {
         cout << path[i] << " ";
     }
     cout << endl;
-    cout << "minimalny koszt: " << totalCost << endl;
+    cout << "Minimalny koszt: " << totalCost << endl;
 
-    return { path, totalCost };
+    delete[] visited;
+    return path; // Zwracamy tablicę najlepszej trasy
 }

@@ -2,7 +2,6 @@
 #include "../Headers/Menu.h"
 #include "iostream"
 #include "time.h"
-#include "cstdlib"
 #include "fstream"
 
 using namespace std;
@@ -11,25 +10,9 @@ Menu::Menu() {
 }
 
 void Menu::run() {
-//    int choice;
-    this -> coolingRate = 0.9;
+    this -> coolingRate = 0.999999;
     this -> timeLimitMs = 120000;
     chooseAlgorithm();
-
-//    while(true) {
-//        cout << "witaj w projekcie ASTP! poruszając się po menu korzystaj tylko z cyfr!" << endl << endl;
-//        cout << endl << "zacznij lub opusc aplikacje" << endl;
-//        cout << "1. start" << endl;
-//        cout<<"lub: "<<endl<<endl;
-//        cout << "0. wyjdz z programu" << endl;
-//        cin>>choice;
-//
-//        if(choice == 1) {
-//            this -> chooseArray();
-//        } else {
-//            cerr << "nieprawidlowy wybor!" << endl;
-//        }
-//    }
 }
 
 void Menu::chooseArray() {
@@ -50,59 +33,58 @@ void Menu::chooseArray() {
 }
 
 void Menu::loadArrayFromFile(string name) {
-    ifstream file(name); // Zmień nazwę pliku na właściwą
+    ifstream file(name);
     if (!file) {
         cout << "nie można otworzyć pliku!" << endl;
     }
 
-    // Inicjalizacja zmiennych
-    vector<vector<double>> graph; // Macierz sąsiedztwa (dynamiczna)
-    int currentVertex = -1; // Indeks bieżącego wierzchołka
+    vector<vector<double>> graph;
+    int currentVertex = -1;
     string line;
 
-    // Przetwarzanie pliku linia po linii
     while (getline(file, line)) {
-        // Jeśli znajdziemy nowy wierzchołek
+        // nowy wierzcholek znaleziony
         if (line.find("<vertex>") != string::npos) {
-            currentVertex++; // Zwiększamy indeks wierzchołka
-            // Dodajemy nowy wiersz do macierzy
+            currentVertex++;
+            // dodajemy nowy wierszz
             graph.emplace_back();
         }
 
-        // Jeśli znajdziemy krawędź (edge)
+        // nowa krawedz w wierzcholku znaleziona
         if (line.find("<edge") != string::npos) {
             size_t costPos = line.find("cost=\"");
+            //przesuwamy na koniec stringu cost="
             size_t endCostPos = line.find("\"", costPos + 6);
             size_t valueStart = line.find(">", endCostPos) + 1;
             size_t valueEnd = line.find("<", valueStart);
 
-            // Pobieramy wartości kosztu i numeru wierzchołka
+            // bierzemy koszt oraz numer wierzcholka
             string costStr = line.substr(costPos + 6, endCostPos - costPos - 6);
             string edgeValueStr = line.substr(valueStart, valueEnd - valueStart);
 
-            double cost = stod(costStr);        // Konwertujemy koszt na liczbę
-            int edgeValue = stoi(edgeValueStr); // Numer wierzchołka
+            double cost = stod(costStr);
+            int edgeValue = stoi(edgeValueStr);
 
-            // Uzupełniamy wiersz macierzy
             if (graph[currentVertex].size() <= edgeValue) {
-                graph[currentVertex].resize(edgeValue + 1, 0); // Rozszerzamy wiersz
+                graph[currentVertex].resize(edgeValue + 1, 0);
             }
             graph[currentVertex][edgeValue] = cost;
         }
     }
 
-    // Ustawianie -1 na diagonalach i wypełnienie brakujących kolumn
     int numVertices = graph.size();
     for (int i = 0; i < numVertices; ++i) {
-        graph[i].resize(numVertices, 0); // Upewniamy się, że każda kolumna ma odpowiedni rozmiar
+        graph[i].resize(numVertices, 0);
         for (int j = 0; j < numVertices; ++j) {
             if (i == j) {
-                graph[i][j] = -1; // Diagonale ustawiamy na -1
+                graph[i][j] = -1;
             }
         }
     }
 
     arrayLength = numVertices;
+
+    currentPath = new int[arrayLength];
 
     incidenceMatrix = new double*[arrayLength];
     for (int i = 0; i < arrayLength; ++i) {
@@ -143,14 +125,47 @@ void Menu::chooseCoolingRate() {
 }
 
 void Menu::saveCurrentPath() {
+    ofstream myfile;
+    myfile.open ("sciezka.txt");
+    myfile << arrayLength<<endl;
 
-    chooseAlgorithm();
+    for(int i=0; i<arrayLength; i++) {
+        myfile << currentPath[i]<<endl;
+    }
+
+    myfile << currentPath[0];
+
+    myfile.close();
 }
 
 void Menu::loadPathAndCalculate() {
+    string name;
+    cout<< "podaj nazwe pliku: "<<endl;
+    cin >> name;
 
-    chooseAlgorithm();
-};
+    ifstream file(name);
+    if(!file.is_open()) {
+        cerr<<"nie udalo sie otworzyc pliku!"<<endl;
+        exit(1);
+    }
+
+    file >> arrayLength;
+    int* pathFromFile = new int[arrayLength+1];
+
+    for (int i = 0; i < arrayLength+1; ++i) {
+        file >> pathFromFile[i];
+    }
+
+    file.close();
+
+    double pathCost;
+    for(int i=0; i<arrayLength; i++) {
+        pathCost += incidenceMatrix[pathFromFile[i]][pathFromFile[i+1]];
+    }
+
+    cout << "obliczona droga: ";
+    cout << pathCost<<endl;
+}
 
 double Menu::chooseAlgorithm() {
 
@@ -171,36 +186,22 @@ double Menu::chooseAlgorithm() {
         cout<<"7. zapisz sciezke rozwiazania"<<endl;
         cout<<"8. wczytaj sciezke i oblicz droge"<<endl;
 
-//        cout<<"lub: "<<endl<<endl;
-//        cout<<"0. wyjdz z programu"<<endl;
         cin>>userChoice;
-
-
-        cout << userChoice<<endl;
-        cout<< coolingRate<<endl;
-//        if(userChoice == 9) {
-//            break;
-//        }
 
         switch (userChoice) {
             case 6:
                 Utilities::printColorText(hConsole, "wybrales simulated annealing\n", GREEN);
 
-//                sa.algorithm(incidenceMatrix,arrayLength,  0.999999, 9000000000000, 120000); 2min
-                sa.algorithm(incidenceMatrix,arrayLength,  coolingRate, 9000000000000, timeLimitMs);
+                currentPath = sa.algorithm(incidenceMatrix,arrayLength,  coolingRate, 9000000000000, timeLimitMs);
 
                 break;
             case 3:
                 Utilities::printColorText(hConsole, "metoda greedy\n", GREEN);
 
-                greedy.greedyAlgorithm(incidenceMatrix, arrayLength);
+                currentPath = greedy.greedyAlgorithm(incidenceMatrix, arrayLength);
 
                 break;
             case 4:
-//                Utilities::printColorText(hConsole, "dynamic programming\n", GREEN);
-
-//                dp->tsp(incidenceMatrix, arrayLength);
-
                 break;
             case 5:
                 chooseCoolingRate();

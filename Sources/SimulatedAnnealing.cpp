@@ -1,11 +1,8 @@
 #include <iostream>
 #include <cmath>
 #include <cstdlib>
-#include <ctime>
 #include <algorithm>
 #include <chrono>
-#include <limits>
-#include <iomanip>
 #include "../Headers/SimulatedAnnealing.h"
 
 using namespace std;
@@ -31,7 +28,6 @@ void SimulatedAnnealing::generateNeighbor(int* tour, int numCities) {
     swap(tour[i], tour[j]);
 }
 
-// Obliczanie początkowej temperatury
 double SimulatedAnnealing::calculateInitialTemperature(int* tour, int numCities, double** distanceMatrix) {
     double maxChange = 0.0;
     double log99 = log(0.99);
@@ -50,7 +46,6 @@ double SimulatedAnnealing::calculateInitialTemperature(int* tour, int numCities,
     return expression;
 }
 
-// Algorytm symulowanego wyżarzania
 double SimulatedAnnealing::simulatedAnnealing(int* bestTour, int numCities, double** distanceMatrix,
                           double coolingRate, int maxIterations, int timeLimitMs) {
     // Inicjalizacja
@@ -58,12 +53,11 @@ double SimulatedAnnealing::simulatedAnnealing(int* bestTour, int numCities, doub
     int* currentTour = new int[numCities];
     for (int i = 0; i < numCities; ++i) {
         currentTour[i] = i;
+        bestTour[i] = i;
+
     }
     random_shuffle(currentTour, currentTour + numCities);
-
-    for (int i = 0; i < numCities; ++i) {
-        bestTour[i] = currentTour[i];
-    }
+    int firstCity = currentTour[0];
 
     double currentCost = calculateCost(currentTour, numCities, distanceMatrix);
     double bestCost = currentCost;
@@ -113,18 +107,23 @@ double SimulatedAnnealing::simulatedAnnealing(int* bestTour, int numCities, doub
         }
     }
 
+//    bestCost += distanceMatrix[firstCity][0];
+//    bestTour[numCities] = firstCity;
+//    cout << "ostatni element w path: " << bestTour[numCities] << endl;
+
     double elapsedTime = Utilities::getElapsedTime(start);
-    cout << "czas algorytmu: " << elapsedTime << " ms" << endl;
+    cout << "czas algorytmu: " << elapsedTime << " ms" << endl<<endl;
     cout << "czas w ktorym znaleziono najlepsze rozwiazanie: " << bestCostFound << " ms" << endl;
 
     cout << "poczatkowa temperatura: " << initialTemperature << endl;
-    cout << "koncowa temperatura: " << exp(-1/temperature) << endl;
+//    cout << "koncowa temperatura: " << exp(-1/temperature) << endl;
+    cout << "koncowa temperatura: " << temperature << endl;
 
     delete[] currentTour;
     return bestCost;
 }
 
-void SimulatedAnnealing::algorithm(double **incidenceMatrix, int len, double coolingRate, int maxIterations,
+int* SimulatedAnnealing::algorithm(double **incidenceMatrix, int len, double coolingRate, int maxIterations,
                                    int timeLimitMs){
     int* bestTour = new int[len];
 
@@ -137,4 +136,6 @@ void SimulatedAnnealing::algorithm(double **incidenceMatrix, int len, double coo
     }
     cout << endl;
     cout << "minimalny koszt: " << bestCost << endl;
+
+    return bestTour;
 }

@@ -25,6 +25,7 @@ class Menu {
     int arrayLength;
     int timeLimitMs;
     double coolingRate;
+    int* currentPath;
     SimulatedAnnealing sa;
     Greedy greedy;
 
@@ -35,7 +36,6 @@ public:
     void run();
     void chooseArray();
     double chooseAlgorithm();
-    void generateRandomArray(int len);
     void chooseStopCriterion();
     void chooseCoolingRate();
     void loadPathAndCalculate();
