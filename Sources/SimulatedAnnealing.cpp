@@ -83,7 +83,7 @@ double SimulatedAnnealing::simulatedAnnealing(int* bestTour, int numCities, doub
 
         // Kryterium akceptacji
         if (neighborCost < currentCost ||
-            exp((currentCost - neighborCost) / temperature) > (rand() / double(neighborCost/2))) {
+            exp((currentCost - neighborCost) / temperature) > (rand() / double(neighborCost))) {
             copy(neighborTour, neighborTour + numCities, currentTour);
             currentCost = neighborCost;
 

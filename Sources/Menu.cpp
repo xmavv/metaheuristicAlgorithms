@@ -7,11 +7,19 @@
 using namespace std;
 
 Menu::Menu() {
+    this -> coolingRate = 0.999999;
+    this -> timeLimitMs = 120000;
+}
+
+void Menu::test() {
+    loadArrayFromFile("rbg358.xml");
+
+    for(int i=0; i<10; i++) {
+//        sa.algorithm(incidenceMatrix,arrayLength,  coolingRate, 9000000000000, timeLimitMs);
+    }
 }
 
 void Menu::run() {
-    this -> coolingRate = 0.999999;
-    this -> timeLimitMs = 120000;
     chooseAlgorithm();
 }
 
@@ -99,19 +107,19 @@ void Menu::loadArrayFromFile(string name) {
 
     file.close();
 
-    cout<<"czy chcesz zobaczyc wczytana macierz?"<<endl;
-    cout<<"1. tak"<<endl;
-    cout<<"2. nie"<<endl;
-    cin>>userChoice;
-
-    if(userChoice == 1) {
-        for (int i = 0; i < numVertices; ++i) {
-            for (int j = 0; j < numVertices; ++j) {
-                cout << incidenceMatrix[i][j] << " ";
-            }
-            cout << endl;
-        }
-    }
+//    cout<<"czy chcesz zobaczyc wczytana macierz?"<<endl;
+//    cout<<"1. tak"<<endl;
+//    cout<<"2. nie"<<endl;
+//    cin>>userChoice;
+//
+//    if(userChoice == 1) {
+//        for (int i = 0; i < numVertices; ++i) {
+//            for (int j = 0; j < numVertices; ++j) {
+//                cout << incidenceMatrix[i][j] << " ";
+//            }
+//            cout << endl;
+//        }
+//    }
 }
 
 void Menu::chooseStopCriterion() {
@@ -202,6 +210,9 @@ double Menu::chooseAlgorithm() {
 
                 break;
             case 4:
+                Utilities::printColorText(hConsole, "wybrales tabu search\n", GREEN);
+
+                currentPath = ts.tabuSearch(incidenceMatrix, arrayLength, 9000000000000, arrayLength/3, timeLimitMs);
                 break;
             case 5:
                 chooseCoolingRate();

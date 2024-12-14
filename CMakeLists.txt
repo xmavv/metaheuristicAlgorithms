@@ -11,4 +11,6 @@ add_executable(untitled1 main.cpp
         Sources/SimulatedAnnealing.cpp
         Headers/SimulatedAnnealing.h
         Headers/Greedy.h
-        Sources/Greedy.cpp)
+        Sources/Greedy.cpp
+        Sources/TabuSearch.cpp
+        Headers/TabuSearch.h)

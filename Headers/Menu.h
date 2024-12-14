@@ -9,6 +9,7 @@
 #include "Utilities.h"
 #include "SimulatedAnnealing.h"
 #include "Greedy.h"
+#include "TabuSearch.h"
 
 // colors
 #define WHITE   7
@@ -28,12 +29,14 @@ class Menu {
     int* currentPath;
     SimulatedAnnealing sa;
     Greedy greedy;
+    TabuSearch ts;
 
 public:
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
     Menu();
     void run();
+    void test();
     void chooseArray();
     double chooseAlgorithm();
     void chooseStopCriterion();
