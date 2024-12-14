@@ -46,3 +46,84 @@ void TabuSearch::updateTabuList(int* solution, int numCities, int** tabuList, in
 }
 
 // Algorytm Tabu Search
+int* TabuSearch::tabuSearch(double** distanceMatrix, int numCities, int maxIterations, int tabuTenure, int timeLimitMs) {
+    // Inicjalizacja zmiennych
+    int* currentSolution = new int[numCities];
+    int* bestSolution = new int[numCities];
+    for (int i = 0; i < numCities; ++i) {
+        currentSolution[i] = i;
+        bestSolution[i] = i;
+    }
+    random_shuffle(currentSolution, currentSolution + numCities);
+
+    double currentCost = calculateCost(currentSolution, numCities, distanceMatrix);
+    double bestCost = currentCost;
+
+    int** tabuList = new int*[numCities];
+    for (int i = 0; i < numCities; ++i) {
+        tabuList[i] = new int[numCities];
+        fill(tabuList[i], tabuList[i] + numCities, 0);
+    }
+
+    auto start = Utilities::startTimer();
+
+    for (int iteration = 0; iteration < maxIterations; ++iteration) {
+        double elapsedTimeMs = Utilities::getElapsedTime(start);
+        if (elapsedTimeMs > timeLimitMs) {
+            cout << "przekroczono limit czasu: " << elapsedTimeMs << " ms" << endl;
+            break;
+        }
+
+        int* bestNeighbor = new int[numCities];
+        copy(currentSolution, currentSolution + numCities, bestNeighbor);
+        double bestNeighborCost = INT_MAX;
+
+        // Szukanie najlepszego sąsiada
+        for (int i = 0; i < numCities; ++i) { // Generuj więcej sąsiadów
+            int* neighbor = new int[numCities];
+            copy(currentSolution, currentSolution + numCities, neighbor);
+
+            // Wybierz losową strategię generowania sąsiada
+            generateNeighbor(neighbor, numCities); // Zamiana dwóch miast
+
+            // Sprawdzenie tabu i aktualizacja najlepszego sąsiada
+            double neighborCost = calculateCost(neighbor, numCities, distanceMatrix);
+            if (neighborCost < bestNeighborCost) {
+                bestNeighborCost = neighborCost;
+                copy(neighbor, neighbor + numCities, bestNeighbor);
+            }
+
+            delete[] neighbor;
+        }
+
+        // Aktualizacja najlepszego rozwiązania
+        if (!isTabu(bestNeighbor, numCities, tabuList, tabuTenure, iteration) || bestNeighborCost < bestCost) {
+            bestCost = bestNeighborCost;
+            copy(bestNeighbor, bestNeighbor + numCities, bestSolution);
+        }
+
+        // Aktualizacja obecnego rozwiązania i listy tabu
+        copy(bestNeighbor, bestNeighbor + numCities, currentSolution);
+        updateTabuList(currentSolution, numCities, tabuList, tabuTenure, iteration);
+
+        delete[] bestNeighbor;
+    }
+
+    double elapsedTime = Utilities::getElapsedTime(start);
+    cout << "Czas algorytmu: " << elapsedTime << " ms" << endl;
+    cout << "Najlepsza trasa: ";
+    for (int i = 0; i < numCities; ++i) {
+        cout << bestSolution[i] << " ";
+    }
+    cout << endl;
+    cout << "Minimalny koszt: " << bestCost << endl;
+
+    // Zwolnienie pamięci dla listy tabu
+    for (int i = 0; i < numCities; ++i) {
+        delete[] tabuList[i];
+    }
+    delete[] tabuList;
+    delete[] currentSolution;
+
+    return bestSolution; // Zwracamy najlepsze rozwiązanie
+}

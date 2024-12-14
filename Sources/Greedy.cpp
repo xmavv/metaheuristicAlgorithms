@@ -24,7 +24,7 @@ int* Greedy::greedyAlgorithm(double** distanceMatrix, int numVertices) {
             if (!visited[city] && distanceMatrix[currentCity][city] != -1) { // Nieodwiedzone i połączenie istnieje
                 if (distanceMatrix[currentCity][city] < minCost) {
                     minCost = distanceMatrix[currentCity][city];
-                    nextCity = city;
+                        nextCity = city;
                 }
             }
         }

@@ -9,6 +9,8 @@ using namespace std;
 Menu::Menu() {
     this -> coolingRate = 0.999999;
     this -> timeLimitMs = 120000;
+
+    loadArrayFromFile("ftv55.xml");
 }
 
 void Menu::test() {
@@ -201,18 +203,16 @@ double Menu::chooseAlgorithm() {
                 Utilities::printColorText(hConsole, "wybrales simulated annealing\n", GREEN);
 
                 currentPath = sa.algorithm(incidenceMatrix,arrayLength,  coolingRate, 9000000000000, timeLimitMs);
-
                 break;
             case 3:
                 Utilities::printColorText(hConsole, "metoda greedy\n", GREEN);
 
                 currentPath = greedy.greedyAlgorithm(incidenceMatrix, arrayLength);
-
                 break;
             case 4:
                 Utilities::printColorText(hConsole, "wybrales tabu search\n", GREEN);
 
-                currentPath = ts.tabuSearch(incidenceMatrix, arrayLength, 9000000000000, arrayLength/3, timeLimitMs);
+                currentPath = ts.tabuSearch(incidenceMatrix, arrayLength, 9000000000000, arrayLength, timeLimitMs);
                 break;
             case 5:
                 chooseCoolingRate();
