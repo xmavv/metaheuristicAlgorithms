@@ -13,4 +13,6 @@ add_executable(untitled1 main.cpp
         Headers/Greedy.h
         Sources/Greedy.cpp
         Sources/TabuSearch.cpp
-        Headers/TabuSearch.h)
+        Headers/TabuSearch.h
+        Headers/Algorithm.h
+        Sources/Algorithm.cpp)
