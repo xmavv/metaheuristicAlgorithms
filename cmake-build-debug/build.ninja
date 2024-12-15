@@ -51,43 +51,43 @@ build cmake_object_order_depends_target_untitled1: phony || CMakeFiles/untitled1
 
 build CMakeFiles/untitled1.dir/main.cpp.obj: CXX_COMPILER__untitled1_unscanned_Debug C$:/Users/mrmat/CLionProjects/untitled1/main.cpp || cmake_object_order_depends_target_untitled1
   DEP_FILE = CMakeFiles\untitled1.dir\main.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -static-libstdc++ -static-libgcc -g -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\untitled1.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.dir
 
 build CMakeFiles/untitled1.dir/Sources/Menu.cpp.obj: CXX_COMPILER__untitled1_unscanned_Debug C$:/Users/mrmat/CLionProjects/untitled1/Sources/Menu.cpp || cmake_object_order_depends_target_untitled1
   DEP_FILE = CMakeFiles\untitled1.dir\Sources\Menu.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -static-libstdc++ -static-libgcc -g -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\untitled1.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.dir\Sources
 
 build CMakeFiles/untitled1.dir/Sources/Utilities.cpp.obj: CXX_COMPILER__untitled1_unscanned_Debug C$:/Users/mrmat/CLionProjects/untitled1/Sources/Utilities.cpp || cmake_object_order_depends_target_untitled1
   DEP_FILE = CMakeFiles\untitled1.dir\Sources\Utilities.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -static-libstdc++ -static-libgcc -g -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\untitled1.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.dir\Sources
 
 build CMakeFiles/untitled1.dir/Sources/SimulatedAnnealing.cpp.obj: CXX_COMPILER__untitled1_unscanned_Debug C$:/Users/mrmat/CLionProjects/untitled1/Sources/SimulatedAnnealing.cpp || cmake_object_order_depends_target_untitled1
   DEP_FILE = CMakeFiles\untitled1.dir\Sources\SimulatedAnnealing.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -static-libstdc++ -static-libgcc -g -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\untitled1.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.dir\Sources
 
 build CMakeFiles/untitled1.dir/Sources/Greedy.cpp.obj: CXX_COMPILER__untitled1_unscanned_Debug C$:/Users/mrmat/CLionProjects/untitled1/Sources/Greedy.cpp || cmake_object_order_depends_target_untitled1
   DEP_FILE = CMakeFiles\untitled1.dir\Sources\Greedy.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -static-libstdc++ -static-libgcc -g -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\untitled1.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.dir\Sources
 
 build CMakeFiles/untitled1.dir/Sources/TabuSearch.cpp.obj: CXX_COMPILER__untitled1_unscanned_Debug C$:/Users/mrmat/CLionProjects/untitled1/Sources/TabuSearch.cpp || cmake_object_order_depends_target_untitled1
   DEP_FILE = CMakeFiles\untitled1.dir\Sources\TabuSearch.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -static-libstdc++ -static-libgcc -g -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\untitled1.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.dir\Sources
 
 build CMakeFiles/untitled1.dir/Sources/Algorithm.cpp.obj: CXX_COMPILER__untitled1_unscanned_Debug C$:/Users/mrmat/CLionProjects/untitled1/Sources/Algorithm.cpp || cmake_object_order_depends_target_untitled1
   DEP_FILE = CMakeFiles\untitled1.dir\Sources\Algorithm.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -static-libstdc++ -static-libgcc -g -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\untitled1.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.dir\Sources
 
@@ -100,7 +100,8 @@ build CMakeFiles/untitled1.dir/Sources/Algorithm.cpp.obj: CXX_COMPILER__untitled
 # Link the executable untitled1.exe
 
 build untitled1.exe: CXX_EXECUTABLE_LINKER__untitled1_Debug CMakeFiles/untitled1.dir/main.cpp.obj CMakeFiles/untitled1.dir/Sources/Menu.cpp.obj CMakeFiles/untitled1.dir/Sources/Utilities.cpp.obj CMakeFiles/untitled1.dir/Sources/SimulatedAnnealing.cpp.obj CMakeFiles/untitled1.dir/Sources/Greedy.cpp.obj CMakeFiles/untitled1.dir/Sources/TabuSearch.cpp.obj CMakeFiles/untitled1.dir/Sources/Algorithm.cpp.obj
-  FLAGS = -g
+  FLAGS = -static-libstdc++ -static-libgcc -g
+  LINK_FLAGS = -static
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\untitled1.dir
   POST_BUILD = cd .
