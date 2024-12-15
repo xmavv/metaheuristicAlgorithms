@@ -1,23 +1,22 @@
 #include <vector>
 #include "../Headers/Menu.h"
 #include "iostream"
-#include "time.h"
 #include "fstream"
 
 using namespace std;
 
 Menu::Menu() {
     this -> coolingRate = 0.999999;
-    this -> timeLimitMs = 120000;
+    this -> timeLimitMs = 240000;
 
-    loadArrayFromFile("ftv55.xml");
+    loadArrayFromFile("ftv170.xml");
 }
 
 void Menu::test() {
     loadArrayFromFile("rbg358.xml");
 
-    for(int i=0; i<10; i++) {
-//        sa.algorithm(incidenceMatrix,arrayLength,  coolingRate, 9000000000000, timeLimitMs);
+    for(int i=0; i<9; i++) {
+        ts.tabuSearch(incidenceMatrix, arrayLength, 9000000000000, arrayLength, timeLimitMs);
     }
 }
 
@@ -108,20 +107,6 @@ void Menu::loadArrayFromFile(string name) {
     }
 
     file.close();
-
-//    cout<<"czy chcesz zobaczyc wczytana macierz?"<<endl;
-//    cout<<"1. tak"<<endl;
-//    cout<<"2. nie"<<endl;
-//    cin>>userChoice;
-//
-//    if(userChoice == 1) {
-//        for (int i = 0; i < numVertices; ++i) {
-//            for (int j = 0; j < numVertices; ++j) {
-//                cout << incidenceMatrix[i][j] << " ";
-//            }
-//            cout << endl;
-//        }
-//    }
 }
 
 void Menu::chooseStopCriterion() {
