@@ -212,7 +212,7 @@ double Menu::chooseAlgorithm() {
             case 4:
                 Utilities::printColorText(hConsole, "wybrales tabu search\n", GREEN);
 
-                currentPath = ts.tabuSearch(incidenceMatrix, arrayLength, 9000000000000, 5, timeLimitMs);
+                currentPath = ts.tabuSearch(incidenceMatrix, arrayLength, 9000000000000, arrayLength, timeLimitMs);
                 break;
             case 5:
                 chooseCoolingRate();
