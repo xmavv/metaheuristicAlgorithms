@@ -8,8 +8,6 @@ using namespace std;
 Menu::Menu() {
     this -> coolingRate = 0.999999;
     this -> timeLimitMs = 240000;
-
-    loadArrayFromFile("ftv170.xml");
 }
 
 void Menu::test() {
@@ -147,7 +145,7 @@ void Menu::loadPathAndCalculate() {
     file >> arrayLength;
     int* pathFromFile = new int[arrayLength+1];
 
-    for (int i = 0; i < arrayLength+1; ++i) {
+    for (int i = 0; i < arrayLength+1; i++) {
         file >> pathFromFile[i];
     }
 
