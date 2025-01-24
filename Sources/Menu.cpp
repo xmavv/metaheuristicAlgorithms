@@ -179,9 +179,15 @@ double Menu::chooseAlgorithm() {
         cout<<"7. zapisz sciezke rozwiazania"<<endl;
         cout<<"8. wczytaj sciezke i oblicz droge"<<endl;
 
+        cout<<"9. algorytm mrowkowy"<<endl;
+
         cin>>userChoice;
 
         switch (userChoice) {
+            case 9:
+                Utilities::printColorText(hConsole, "wybrales simulated annealing\n", GREEN);
+                ac.run(arrayLength, incidenceMatrix, 550, 1.0, 5.0, 0.5, 0.8, 0.01, 100000);
+                break;
             case 6:
                 Utilities::printColorText(hConsole, "wybrales simulated annealing\n", GREEN);
 

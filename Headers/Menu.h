@@ -10,6 +10,7 @@
 #include "SimulatedAnnealing.h"
 #include "Greedy.h"
 #include "TabuSearch.h"
+#include "AntColony.h"
 
 // colors
 #define WHITE   7
@@ -30,6 +31,7 @@ class Menu {
     SimulatedAnnealing sa;
     Greedy greedy;
     TabuSearch ts;
+    AntColony ac;
 
 public:
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);

@@ -17,4 +17,6 @@ add_executable(untitled1 main.cpp
         Sources/TabuSearch.cpp
         Headers/TabuSearch.h
         Headers/Algorithm.h
-        Sources/Algorithm.cpp)
+        Sources/Algorithm.cpp
+        Sources/AntColony.cpp
+        Headers/AntColony.h)
