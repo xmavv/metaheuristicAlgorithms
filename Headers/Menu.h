@@ -26,11 +26,13 @@ class Menu {
     double **incidenceMatrix;
     int arrayLength;
     int timeLimitMs;
-    double coolingRate;
+    double mutationFactor;
+    int initialPopulation;
+    double crossoverFactor;
     int* currentPath;
     SimulatedAnnealing sa;
-    Greedy greedy;
-    TabuSearch ts;
+//    Greedy greedy;
+//    TabuSearch ts;
     AntColony ac;
 
 public:
@@ -46,6 +48,10 @@ public:
     void loadPathAndCalculate();
     void saveCurrentPath();
     void loadArrayFromFile(string name);
+    void chooseInitialPopulation();
+    void chooseCrossoverFactor();
+    void chooseMutationFactor();
+    void chooseCrossoverMethod();
 };
 
 #endif //UNTITLED1_MENU_H

@@ -6,7 +6,7 @@
 			[
 				{
 					"build" : ".",
-					"jsonFile" : "directory-.-Release-d0094a50bb2071803777.json",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.27"
@@ -19,7 +19,7 @@
 					]
 				}
 			],
-			"name" : "Release",
+			"name" : "Debug",
 			"projects" : 
 			[
 				{
@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "untitled1::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-untitled1-Release-b934d808d838a8c16790.json",
+					"jsonFile" : "target-untitled1-Debug-b15b96193ac48baa4c19.json",
 					"name" : "untitled1",
 					"projectIndex" : 0
 				}
@@ -49,7 +49,7 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/mrmat/CLionProjects/untitled1/cmake-build-release",
+		"build" : "C:/Users/mrmat/CLionProjects/untitled1/cmake-build-debug",
 		"source" : "C:/Users/mrmat/CLionProjects/untitled1"
 	},
 	"version" : 

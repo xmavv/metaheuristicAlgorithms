@@ -6,15 +6,18 @@
 using namespace std;
 
 Menu::Menu() {
-    this -> coolingRate = 0.999999;
-    this -> timeLimitMs = 240000;
+//    this -> coolingRate = 0.999999;
+    this -> timeLimitMs = 30000;
+    this -> crossoverFactor = 0.8;
+    this -> mutationFactor = 0.01;
+    this -> initialPopulation = 2000;
 }
 
 void Menu::test() {
-    loadArrayFromFile("rbg358.xml");
+    loadArrayFromFile("ftv170.xml");
 
     for(int i=0; i<9; i++) {
-        ts.tabuSearch(incidenceMatrix, arrayLength, 9000000000000, arrayLength, timeLimitMs);
+//        ts.tabuSearch(incidenceMatrix, arrayLength, 9000000000000, arrayLength, timeLimitMs);
     }
 }
 
@@ -112,9 +115,31 @@ void Menu::chooseStopCriterion() {
     cin >> timeLimitMs;
 }
 
-void Menu::chooseCoolingRate() {
-    Utilities::printColorText(hConsole,"podaj wspolczynnik zmiany temperatury",MAGENTA);
-    cin >> coolingRate;
+//void Menu::chooseCoolingRate() {
+//    Utilities::printColorText(hConsole,"podaj wspolczynnik zmiany temperatury",MAGENTA);
+//    cin >> coolingRate;
+//}
+
+void Menu::chooseInitialPopulation() {
+    Utilities::printColorText(hConsole,"podaj poczatkowa populacje",MAGENTA);
+    cin >> initialPopulation;
+}
+
+void Menu::chooseCrossoverFactor() {
+    Utilities::printColorText(hConsole,"podaj wspolczynnik krzyzowania",MAGENTA);
+    cin >> crossoverFactor;
+}
+
+void Menu::chooseMutationFactor() {
+    Utilities::printColorText(hConsole,"podaj wspolczynnik mutacji",MAGENTA);
+    cin >> mutationFactor;
+}
+
+void Menu::chooseCrossoverMethod() {
+    Utilities::printColorText(hConsole,"wybierz metode krzyzowania: ",MAGENTA);
+    Utilities::printColorText(hConsole,"PMX: 1",MAGENTA);
+    Utilities::printColorText(hConsole,"OX: 2",MAGENTA);
+    cin >> userChoice;
 }
 
 void Menu::saveCurrentPath() {
@@ -169,6 +194,7 @@ double Menu::chooseAlgorithm() {
 
         cout<<"1. wczytaj dane z pliku"<<endl;
         cout<<"2. ustaw kryterium stopu"<<endl;
+
         cout<<"3. obliczenie metoda zachlanna"<<endl;
 
         cout<<"4. tabuSearch"<<endl;
@@ -179,32 +205,54 @@ double Menu::chooseAlgorithm() {
         cout<<"7. zapisz sciezke rozwiazania"<<endl;
         cout<<"8. wczytaj sciezke i oblicz droge"<<endl;
 
-        cout<<"9. algorytm mrowkowy"<<endl;
+        cout<<"9. ustaw wielkosc populacji poczatkowej"<<endl;
+        cout<<"10. ustaw wspolczynnik mutacji"<<endl;
+        cout<<"11. ustaw wspolczynnik krzyzowania"<<endl;
+        cout<<"12. wybor metody krzyzowania"<<endl;
+
+        cout<<"14. algorytm mrowkowy"<<endl;
 
         cin>>userChoice;
 
         switch (userChoice) {
+            case 14:
+                Utilities::printColorText(hConsole, "wybrales algorytm mrowkowy\n", GREEN);
+
+                if(userChoice != 2) {
+                    ac.runPMX(arrayLength, incidenceMatrix, initialPopulation, 2.0, 3.0, 0.7, crossoverFactor, mutationFactor, timeLimitMs);
+                } else {
+                    ac.runOX(arrayLength, incidenceMatrix, initialPopulation, 2.0, 3.0, 0.7, crossoverFactor, mutationFactor, timeLimitMs);
+                }
+                break;
             case 9:
-                Utilities::printColorText(hConsole, "wybrales simulated annealing\n", GREEN);
-                ac.run(arrayLength, incidenceMatrix, 550, 1.0, 5.0, 0.5, 0.8, 0.01, 100000);
+                chooseInitialPopulation();
+                break;
+            case 10:
+                chooseMutationFactor();
+                break;
+            case 11:
+                chooseCrossoverFactor();
+                break;
+            case 12:
+                chooseCrossoverMethod();
                 break;
             case 6:
                 Utilities::printColorText(hConsole, "wybrales simulated annealing\n", GREEN);
 
-                currentPath = sa.algorithm(incidenceMatrix,arrayLength,  coolingRate, 9000000000000, timeLimitMs);
+//                currentPath = sa.algorithm(incidenceMatrix,arrayLength,  coolingRate, 9000000000000, timeLimitMs);
                 break;
             case 3:
                 Utilities::printColorText(hConsole, "metoda greedy\n", GREEN);
 
-                currentPath = greedy.greedyAlgorithm(incidenceMatrix, arrayLength);
+//                currentPath = greedy.greedyAlgorithm(incidenceMatrix, arrayLength);
                 break;
             case 4:
                 Utilities::printColorText(hConsole, "wybrales tabu search\n", GREEN);
 
-                currentPath = ts.tabuSearch(incidenceMatrix, arrayLength, 9000000000000, arrayLength, timeLimitMs);
+//                currentPath = ts.tabuSearch(incidenceMatrix, arrayLength, 9000000000000, arrayLength, timeLimitMs);
                 break;
             case 5:
-                chooseCoolingRate();
+//                chooseCoolingRate();
                 break;
             case 2:
                 chooseStopCriterion();
