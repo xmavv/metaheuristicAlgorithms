@@ -7,7 +7,7 @@ using namespace std;
 
 Menu::Menu() {
 //    this -> coolingRate = 0.999999;
-    this -> timeLimitMs = 30000;
+    this -> timeLimitMs = 240000;
     this -> crossoverFactor = 0.8;
     this -> mutationFactor = 0.01;
     this -> initialPopulation = 2000;
@@ -219,7 +219,7 @@ double Menu::chooseAlgorithm() {
                 Utilities::printColorText(hConsole, "wybrales algorytm mrowkowy\n", GREEN);
 
                 if(userChoice != 2) {
-                    ac.runPMX(arrayLength, incidenceMatrix, initialPopulation, 2.0, 3.0, 0.7, crossoverFactor, mutationFactor, timeLimitMs);
+                    ac.runPMX(arrayLength, incidenceMatrix, initialPopulation, 2.0, 3.0, 0.1, crossoverFactor, mutationFactor, timeLimitMs);
                 } else {
                     ac.runOX(arrayLength, incidenceMatrix, initialPopulation, 2.0, 3.0, 0.7, crossoverFactor, mutationFactor, timeLimitMs);
                 }
