@@ -123,7 +123,7 @@ int* AntColony::runPMX(int numCities, double** distanceMatrix, int populationSiz
     double* fitness = new double[populationSize]; // Tablica przechowująca dopasowanie tras
     int* bestTour = nullptr; // Najlepsza trasa
     double bestTourLength = std::numeric_limits<double>::max(); // Długość najlepszej trasy
-    bladWzgledny = abs(bestTourLength - 2755)/2755;
+    bladWzgledny = (abs(bestTourLength - 2755)/2755) * 100;
 
     auto start = Utilities::startTimer(); // Rozpoczęcie pomiaru czasu
     double elapsedTimeMs;
@@ -148,7 +148,7 @@ int* AntColony::runPMX(int numCities, double** distanceMatrix, int populationSiz
                 if (bestTour) delete[] bestTour; // Usunięcie starej najlepszej trasy
                 bestTour = new int[numCities];
                 std::copy(population[i], population[i] + numCities, bestTour); // Kopiowanie nowej najlepszej trasy
-                bladWzgledny = abs(bestTourLength - 2755)/2755;
+                bladWzgledny = (abs(bestTourLength - 2755)/2755) * 100;
             }
         }
 
@@ -219,7 +219,7 @@ int* AntColony::runOX(int numCities, double** distanceMatrix, int populationSize
     double* fitness = new double[populationSize];
     int* bestTour = nullptr;
     double bestTourLength = std::numeric_limits<double>::max();
-    double bladWzgledny = abs(bestTourLength - 2755)/2755;
+    double bladWzgledny = (abs(bestTourLength - 2755)/2755) * 100;
 
     auto start = Utilities::startTimer();
 
@@ -244,6 +244,7 @@ int* AntColony::runOX(int numCities, double** distanceMatrix, int populationSize
                 if (bestTour) delete[] bestTour;
                 bestTour = new int[numCities];
                 std::copy(population[i], population[i] + numCities, bestTour);
+                bladWzgledny = (abs(bestTourLength - 2755)/2755) * 100;
             }
         }
 
