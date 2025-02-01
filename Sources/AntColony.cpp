@@ -4,8 +4,6 @@
 #include <limits>
 #include <iostream>
 #include <chrono>
-#include <cmath>
-#include <iostream>
 #include <cstdlib>
 using namespace std;
 
@@ -16,53 +14,49 @@ AntColony::~AntColony() {
     delete[] pheromones;
 }
 
-// Inicjalizacja populacji mrówek
 void AntColony::initializePopulation(int**& population) {
-    // Alokacja pamięci dla populacji
     population = new int*[populationSize];
     for (int i = 0; i < populationSize; ++i) {
-        population[i] = new int[numCities]; // Alokacja pamięci dla trasy każdej mrówki
+        population[i] = new int[numCities];
         for (int j = 0; j < numCities; ++j) {
-            population[i][j] = j; // Inicjalizacja kolejności odwiedzania miast
+            population[i][j] = j; //inicjalizacja miast po kolei
         }
-        // Losowe permutowanie miast, aby uzyskać różnorodne trasy początkowe
+        //losowe permutowanie miast, aby uzyskac losowe trasy poczatkowe
         std::shuffle(population[i], population[i] + numCities, rng);
     }
 }
 
-// Obliczanie długości trasy
 double AntColony::calculateTourLength(const int* tour) {
     double length = 0.0;
-    // Suma odległości pomiędzy kolejnymi miastami na trasie
+
     for (int i = 0; i < numCities - 1; ++i) {
         length += distanceMatrix[tour[i]][tour[i + 1]];
     }
-    // Dodanie odległości powrotnej do miasta początkowego
+
     length += distanceMatrix[tour[numCities - 1]][tour[0]];
     return length;
 }
 
-// Aktualizacja macierzy feromonów
 void AntColony::updatePheromones(int** population, const double* fitness, const int* bestTour, double bestTourLength) {
-    // Odparowanie feromonów (redukcja wartości w macierzy)
+    //odparowanie feromonow
     for (int i = 0; i < numCities; ++i) {
         for (int j = 0; j < numCities; ++j) {
-            pheromones[i][j] *= (1.0 - evaporationRate); // Zmniejszanie feromonów o współczynnik parowania
-            pheromones[i][j] = std::max(pheromones[i][j], minPheromone); // Dolne ograniczenie wartości feromonów
-            pheromones[i][j] = std::min(pheromones[i][j], maxPheromone); // Górne ograniczenie wartości feromonów
+            pheromones[i][j] *= (1.0 - evaporationRate);
+            pheromones[i][j] = std::max(pheromones[i][j], minPheromone); //dolne ograniczenie
+            pheromones[i][j] = std::min(pheromones[i][j], maxPheromone); //gorne ograniczenie
         }
     }
 
-    // Wzmocnienie feromonów na podstawie najlepszej trasy
+    //wzmocnienie feromonow na bazie najlepszej trasy
     for (int i = 0; i < numCities - 1; ++i) {
         int from = bestTour[i];
         int to = bestTour[i + 1];
-        pheromones[from][to] += Q / bestTourLength; // Aktualizacja na krawędziach trasy
-        pheromones[to][from] += Q / bestTourLength; // Symetryczna aktualizacja
+        pheromones[from][to] += Q / bestTourLength;
+        pheromones[to][from] += Q / bestTourLength; //to mozna usunac w koncu mamy astp chyba i zobaczyc jak to liczy
     }
 }
 
-// Lokalna optymalizacja trasy metodą 2-opt
+//wbyeiramy dwa miasta i odwracamy trase miedzy nimi, sprawdzamy czy trasa jest krotsza, jezeli tak aktualizujemy trase
 void AntColony::twoOptLocalSearch(int* tour) {
     bool improvement = true; // Flaga wskazująca, czy znaleziono poprawę
     auto startTime = std::chrono::steady_clock::now(); // Czas rozpoczęcia optymalizacji
@@ -82,7 +76,7 @@ void AntColony::twoOptLocalSearch(int* tour) {
                 }
             }
         }
-        // Przerwanie optymalizacji po przekroczeniu 100 ms
+        //przrrwanie po przekroczeniu czasu
         auto currentTime = std::chrono::steady_clock::now();
         if (std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - startTime).count() > 100) {
             break;
@@ -94,7 +88,6 @@ void AntColony::twoOptLocalSearch(int* tour) {
 int* AntColony::runPMX(int numCities, double** distanceMatrix, int populationSize,
                        double alpha, double beta, double evaporationRate,
                        double crossoverRate, double mutationRate, int timeLimit) {
-    // Inicjalizacja parametrów algorytmu
     this->numCities = numCities;
     this->distanceMatrix = distanceMatrix;
     this->populationSize = populationSize;
@@ -107,89 +100,87 @@ int* AntColony::runPMX(int numCities, double** distanceMatrix, int populationSiz
 
     double bladWzgledny;
 
-    // Inicjalizacja macierzy feromonów
+    //macierz feromonow
     pheromones = new double*[numCities];
     for (int i = 0; i < numCities; ++i) {
         pheromones[i] = new double[numCities];
         for (int j = 0; j < numCities; ++j) {
-            pheromones[i][j] = initialPheromone; // Wartość początkowa feromonów
+            pheromones[i][j] = initialPheromone;
         }
     }
 
-    // Tworzenie początkowej populacji
+    //populacja
     int** population;
     initializePopulation(population);
 
-    double* fitness = new double[populationSize]; // Tablica przechowująca dopasowanie tras
-    int* bestTour = nullptr; // Najlepsza trasa
-    double bestTourLength = std::numeric_limits<double>::max(); // Długość najlepszej trasy
+    double* fitness = new double[populationSize]; //funkcja fitnesu, jak dana trasa jest dobra
+    int* bestTour = nullptr;
+    double bestTourLength = std::numeric_limits<double>::max();
     bladWzgledny = (abs(bestTourLength - 2755)/2755) * 100;
 
-    auto start = Utilities::startTimer(); // Rozpoczęcie pomiaru czasu
+    auto start = Utilities::startTimer();
     double elapsedTimeMs;
 
-    // Pętla główna algorytmu
+    //petla glowna
     while (true) {
         elapsedTimeMs = Utilities::getElapsedTime(start);
-        if (elapsedTimeMs > timeLimit) { // Sprawdzanie limitu czasu
+        if (elapsedTimeMs > timeLimit) {
             break;
         }
 
-//        if((int)elapsedTimeMs % 10000 == 0) {
-            cout << "blad wzgledny: " << bladWzgledny << endl;
-//        }
-
-        // Ocena populacji
+        //ocena populacji
         for (int i = 0; i < populationSize / 5; ++i) {
-            twoOptLocalSearch(population[i]); // Optymalizacja lokalna trasy
-            fitness[i] = 1.0 / calculateTourLength(population[i]); // Obliczanie dopasowania (odwrotność długości trasy)
+            twoOptLocalSearch(population[i]); //optymalizacja lokalnej trasy
+            fitness[i] = 1.0 / calculateTourLength(population[i]); //obliczenie dopasowania (fitness)
             if (1.0 / fitness[i] < bestTourLength) {
-                bestTourLength = 1.0 / fitness[i]; // Aktualizacja najlepszej długości trasy
-                if (bestTour) delete[] bestTour; // Usunięcie starej najlepszej trasy
+
+                bestTourLength = 1.0 / fitness[i];
+                if (bestTour) delete[] bestTour;
+
                 bestTour = new int[numCities];
-                std::copy(population[i], population[i] + numCities, bestTour); // Kopiowanie nowej najlepszej trasy
+                std::copy(population[i], population[i] + numCities, bestTour);
                 bladWzgledny = (abs(bestTourLength - 2755)/2755) * 100;
             }
         }
 
-        // Aktualizacja feromonów
+        //aktualizacja feromonow
         updatePheromones(population, fitness, bestTour, bestTourLength);
 
-        // Krzyżowanie i mutacje
+        //krzyzowanie i mutacja
         for (int i = 0; i < populationSize; ++i) {
             if (static_cast<double>(rand()) / RAND_MAX < crossoverRate) {
-                int j = rand() % populationSize; // Wybór losowego rodzica
-                int* child = crossoverPMX(population[i], population[j]); // Krzyżowanie PMX
+                int j = rand() % populationSize; //wybor losowego rodzica
+                int* child = crossoverPMX(population[i], population[j]); //metoda krzyzowania
                 delete[] population[i];
                 population[i] = child;
             }
 
             if (static_cast<double>(rand()) / RAND_MAX < mutationRate) {
-                mutate(population[i]); // Mutacja trasy
+                mutate(population[i]); //mutacja
             }
         }
 
-        // Dynamiczna zmiana parametrów
-        alpha = std::min(5.0, alpha + 0.001); // Zwiększanie znaczenia feromonów
-        mutationRate = std::max(0.001, mutationRate * 0.99); // Zmniejszanie prawdopodobieństwa mutacji
+        alpha = std::min(5.0, alpha + 0.001); //wspolczynnik do feromonow w gore
+        mutationRate = std::max(0.001, mutationRate * 0.99); //wspolczynnik mutacji w dol
     }
 
-    // Usuwanie populacji
+    //usuwanie populacji
     for (int i = 0; i < populationSize; ++i) {
         delete[] population[i];
     }
     delete[] population;
     delete[] fitness;
 
-    // Wyświetlenie wyników
+//     Wyświetlenie wyników
     std::cout << "Najlepsza trasa: ";
     for (int i = 0; i < numCities; ++i) {
         std::cout << bestTour[i] << " ";
     }
     std::cout << "\nDlugosc najlepszej trasy: " << bestTourLength << std::endl;
     std::cout << "\nczas: " << elapsedTimeMs << std::endl;
+    std::cout << "\nblad wzgledny : " << bladWzgledny << std::endl;
 
-    return bestTour; // Zwrócenie najlepszej trasy
+    return bestTour;
 }
 
 int* AntColony::runOX(int numCities, double** distanceMatrix, int populationSize,
@@ -233,7 +224,7 @@ int* AntColony::runOX(int numCities, double** distanceMatrix, int populationSize
             break;
         }
 
-        cout << "blad wzgledny: " << bladWzgledny << endl;
+//        cout << "blad wzgledny: " << bladWzgledny << endl;
 
         // Ocena populacji
         for (int i = 0; i < populationSize/5; ++i) {
@@ -278,12 +269,13 @@ int* AntColony::runOX(int numCities, double** distanceMatrix, int populationSize
     delete[] population;
     delete[] fitness;
 
-    std::cout << "Najlepsza trasa: ";
-    for (int i = 0; i < numCities; ++i) {
-        std::cout << bestTour[i] << " ";
-    }
+//    std::cout << "Najlepsza trasa: ";
+//    for (int i = 0; i < numCities; ++i) {
+//        std::cout << bestTour[i] << " ";
+//    }
     std::cout << "\nDlugosc najlepszej trasy: " << bestTourLength << std::endl;
     std::cout << "\nczas: " << elapsedTimeMs << std::endl;
+    std::cout << "\nblad wzgledny : " << bladWzgledny << std::endl;
 
     return bestTour;
 }

@@ -28,12 +28,12 @@ class Menu {
     int timeLimitMs;
     double mutationFactor;
     int initialPopulation;
-    double crossoverFactor;
+    double coolingRate;
     int* currentPath;
     SimulatedAnnealing sa;
-//    Greedy greedy;
-//    TabuSearch ts;
-    AntColony ac;
+    Greedy greedy;
+    TabuSearch ts;
+//    AntColony ac;
 
 public:
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);

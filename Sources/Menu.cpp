@@ -6,19 +6,44 @@
 using namespace std;
 
 Menu::Menu() {
-//    this -> coolingRate = 0.999999;
-    this -> timeLimitMs = 240000;
-    this -> crossoverFactor = 0.8;
-    this -> mutationFactor = 0.01;
-    this -> initialPopulation = 2000;
+    this -> coolingRate = 0.999999;
+    this -> timeLimitMs = 30000;
+//    this -> crossoverFactor = 0.8;
+//    this -> mutationFactor = 0.01;
+//    this -> initialPopulation = 2000;
 }
 
 void Menu::test() {
     loadArrayFromFile("ftv170.xml");
 
-    for(int i=0; i<9; i++) {
-//        ts.tabuSearch(incidenceMatrix, arrayLength, 9000000000000, arrayLength, timeLimitMs);
-    }
+//    for(int i=0; i<10; i++) {
+//        cout<< "proba numer" << i+1 <<endl<<endl;
+//
+//        ac.runPMX(arrayLength, incidenceMatrix, initialPopulation, 2.0, 3.0, 0.7, crossoverFactor, mutationFactor,
+//                         timeLimitMs);
+//    }
+
+
+
+// TODO TESTY 2
+//    tylko tutaj pozmieniaj zeby ci wyswietlalo tylko najlepszy blad i najlepsza trase
+//    for(int j=0; j<3; j++) {
+//        this -> initialPopulation = 1000 * (j+1);
+//        for (int i = 0; i < 10; i++) {
+//            cout << "\n\n\ntest OX nr " << i << "\n\n\n";
+//            ac.runOX(arrayLength, incidenceMatrix, initialPopulation, 2.0, 3.0, 0.7, crossoverFactor, mutationFactor,
+//                     timeLimitMs);
+//        }
+//    }
+
+//    for(int j=0; j<3; j++) {
+//        this -> initialPopulation = 1000 * (j+1);
+//        for (int i = 0; i < 10; i++) {
+//            cout << "\n\n\ntest PMX nr " << i << "\n\n\n";
+//            ac.runPMX(arrayLength, incidenceMatrix, initialPopulation, 2.0, 3.0, 0.7, crossoverFactor, mutationFactor,
+//                     timeLimitMs);
+//        }
+//    }
 }
 
 void Menu::run() {
@@ -115,20 +140,20 @@ void Menu::chooseStopCriterion() {
     cin >> timeLimitMs;
 }
 
-//void Menu::chooseCoolingRate() {
-//    Utilities::printColorText(hConsole,"podaj wspolczynnik zmiany temperatury",MAGENTA);
-//    cin >> coolingRate;
-//}
+void Menu::chooseCoolingRate() {
+    Utilities::printColorText(hConsole,"podaj wspolczynnik zmiany temperatury",MAGENTA);
+    cin >> coolingRate;
+}
 
 void Menu::chooseInitialPopulation() {
     Utilities::printColorText(hConsole,"podaj poczatkowa populacje",MAGENTA);
     cin >> initialPopulation;
 }
 
-void Menu::chooseCrossoverFactor() {
-    Utilities::printColorText(hConsole,"podaj wspolczynnik krzyzowania",MAGENTA);
-    cin >> crossoverFactor;
-}
+//void Menu::chooseCrossoverFactor() {
+//    Utilities::printColorText(hConsole,"podaj wspolczynnik krzyzowania",MAGENTA);
+//    cin >> crossoverFactor;
+//}
 
 void Menu::chooseMutationFactor() {
     Utilities::printColorText(hConsole,"podaj wspolczynnik mutacji",MAGENTA);
@@ -215,31 +240,31 @@ double Menu::chooseAlgorithm() {
         cin>>userChoice;
 
         switch (userChoice) {
-            case 14:
-                Utilities::printColorText(hConsole, "wybrales algorytm mrowkowy\n", GREEN);
-
-                if(userChoice != 2) {
-                    ac.runPMX(arrayLength, incidenceMatrix, initialPopulation, 2.0, 3.0, 0.1, crossoverFactor, mutationFactor, timeLimitMs);
-                } else {
-                    ac.runOX(arrayLength, incidenceMatrix, initialPopulation, 2.0, 3.0, 0.7, crossoverFactor, mutationFactor, timeLimitMs);
-                }
-                break;
+//            case 14:
+//                Utilities::printColorText(hConsole, "wybrales algorytm mrowkowy\n", GREEN);
+//
+//                if(userChoice != 2) {
+//                    ac.runPMX(arrayLength, incidenceMatrix, initialPopulation, 2.0, 3.0, 0.1, crossoverFactor, mutationFactor, timeLimitMs);
+//                } else {
+//                    ac.runOX(arrayLength, incidenceMatrix, initialPopulation, 2.0, 3.0, 0.7, crossoverFactor, mutationFactor, timeLimitMs);
+//                }
+//                break;
             case 9:
-                chooseInitialPopulation();
+//                chooseInitialPopulation();
                 break;
             case 10:
-                chooseMutationFactor();
+//                chooseMutationFactor();
                 break;
             case 11:
-                chooseCrossoverFactor();
+//                chooseCrossoverFactor();
                 break;
             case 12:
-                chooseCrossoverMethod();
+//                chooseCrossoverMethod();
                 break;
             case 6:
                 Utilities::printColorText(hConsole, "wybrales simulated annealing\n", GREEN);
 
-//                currentPath = sa.algorithm(incidenceMatrix,arrayLength,  coolingRate, 9000000000000, timeLimitMs);
+                currentPath = sa.algorithm(incidenceMatrix,arrayLength,  coolingRate, 9000000000000, timeLimitMs);
                 break;
             case 3:
                 Utilities::printColorText(hConsole, "metoda greedy\n", GREEN);
@@ -249,10 +274,10 @@ double Menu::chooseAlgorithm() {
             case 4:
                 Utilities::printColorText(hConsole, "wybrales tabu search\n", GREEN);
 
-//                currentPath = ts.tabuSearch(incidenceMatrix, arrayLength, 9000000000000, arrayLength, timeLimitMs);
+                currentPath = ts.tabuSearch(incidenceMatrix, arrayLength, 9000000000000, arrayLength, timeLimitMs);
                 break;
             case 5:
-//                chooseCoolingRate();
+                chooseCoolingRate();
                 break;
             case 2:
                 chooseStopCriterion();

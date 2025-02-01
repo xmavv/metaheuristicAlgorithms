@@ -29,6 +29,8 @@ double SimulatedAnnealing::calculateInitialTemperature(int* tour, int numCities,
 double SimulatedAnnealing::simulatedAnnealing(int* bestTour, int numCities, double** distanceMatrix,
                           double coolingRate, int maxIterations, int timeLimitMs) {
     double bestCostFound;
+    double bladWzgledny = 100;
+
     int* currentTour = new int[numCities];
     for (int i = 0; i < numCities; ++i) {
         currentTour[i] = i;
@@ -48,6 +50,10 @@ double SimulatedAnnealing::simulatedAnnealing(int* bestTour, int numCities, doub
     for (int iteration = 0; iteration < maxIterations; ++iteration) {
         auto now = high_resolution_clock::now();
         double elapsedTimeMs = Utilities::getElapsedTime(start);
+
+        bladWzgledny = (abs(bestCost - 1608)/1608) * 100;
+
+        cout << bladWzgledny << ", ";
         if (elapsedTimeMs > timeLimitMs) {
             cout << "przekroczono limit czasu: " << elapsedTimeMs << " ms" << endl;
             break;
@@ -85,7 +91,6 @@ double SimulatedAnnealing::simulatedAnnealing(int* bestTour, int numCities, doub
 
     double elapsedTime = Utilities::getElapsedTime(start);
     cout << "czas algorytmu: " << elapsedTime << " ms" << endl<<endl;
-    cout << "czas w ktorym znaleziono najlepsze rozwiazanie: " << bestCostFound << " ms" << endl;
 
     cout << "poczatkowa temperatura: " << initialTemperature << endl;
     cout << "koncowa temperatura: " << temperature << endl;
